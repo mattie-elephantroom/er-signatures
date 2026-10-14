@@ -3,7 +3,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter+Tight:wght@400;500;600&display=swap">
 <style>
-/* Layout: two columns on desktop, form on the left and a live email reply on the right; one column on phones. */
+/* Always dark (ink ground), whatever the viewer's theme. Layout: two columns on desktop, form on the left and a live email reply on the right; one column on phones. */
 :root{
   --ink:#151515; --ink-2:#1e1e1e; --ink-3:#2a2a2a; --line:#353330;
   --bone:#F3F3F3; --mute:#a8a49d; --orange:#F9A720; --orange-text:#F9A720; --on-orange:#151515;
@@ -12,12 +12,6 @@
   --body:"Inter Tight",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   color-scheme:dark;
 }
-@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
-  --ink:#F3F3F3; --ink-2:#ffffff; --ink-3:#ebe9e5; --line:#d9d5ce;
-  --bone:#151515; --mute:#5e5a54; --orange-text:#A85100; color-scheme:light }}
-:root[data-theme="light"]{
-  --ink:#F3F3F3; --ink-2:#ffffff; --ink-3:#ebe9e5; --line:#d9d5ce;
-  --bone:#151515; --mute:#5e5a54; --orange-text:#A85100; color-scheme:light }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{background:var(--ink);color:var(--bone);font-family:var(--body);font-size:15px;line-height:1.5;
