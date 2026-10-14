@@ -101,7 +101,7 @@ footer{color:var(--mute);font-size:12px;border-top:1px solid var(--line);padding
         <label class="f full">Full name<input id="name" type="text" value="Sam Taylor" autocomplete="name"></label>
         <label class="f">Title<input id="title" type="text" value="Account Director" autocomplete="organization-title"></label>
         <label class="f">Pronouns <small>(optional)</small><input id="pronouns" type="text" placeholder="she/her"></label>
-        <label class="f">Mobile<input id="mobile" type="tel" value="0400 000 000" autocomplete="tel"></label>
+        <label class="f">Mobile <small>(optional)</small><input id="mobile" type="tel" value="0400 000 000" autocomplete="tel"></label>
         <label class="f">Email<input id="email" type="email" value="sam@elephantroom.com.au" autocomplete="email"></label>
         <label class="f full">Extra line <small>(optional, e.g. working days)</small><input id="extra" type="text" placeholder="Working days: Mon–Thu"></label>
       </div>
@@ -123,7 +123,7 @@ footer{color:var(--mute);font-size:12px;border-top:1px solid var(--line);padding
         <label class="tog"><input type="checkbox" id="ack">Add an Acknowledgement of Country</label>
         <label class="f" id="ackwrap" hidden>Acknowledgement text<textarea id="acktext">Elephant Room acknowledges the Gadigal people of the Eora Nation, the Traditional Custodians of the land on which we work.</textarea></label>
       </div>
-      <p class="note">The office phone and Marrickville address are added to every signature. The example details above are placeholders; your edits are remembered in this browser only.</p>
+      <p class="note">The Marrickville address is added to every signature. The example details above are placeholders; your edits are remembered in this browser only.</p>
     </form>
 
     <div class="right">
@@ -197,7 +197,7 @@ const GIF = {
 };
 const $ = id => document.getElementById(id);
 const ids = ["name","title","pronouns","mobile","email","extra","site","ack","acktext"];
-const OFFICE = {phone:"(02) 8528 7546", address:"Suite 402/76a Edinburgh Road, Marrickville, Sydney 2204, Australia", map:"https://maps.google.com/?q=Suite+402%2F76a+Edinburgh+Road+Marrickville+NSW+2204"};
+const OFFICE = {address:"Suite 402/76a Edinburgh Road, Marrickville, Sydney 2204, Australia", map:"https://maps.google.com/?q=Suite+402%2F76a+Edinburgh+Road+Marrickville+NSW+2204"};
 let pos = "below";
 const esc = s => String(s||"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const telHref = s => "tel:" + String(s).replace(/[^\d+]/g,"");
@@ -212,8 +212,7 @@ function build(d, forPreview){
   const ORANGE="#A85100", INK="#151515", MUTE="#6b6862";
   const font = "font-family:Arial,Helvetica,sans-serif;";
   const row = (inner, pad) => `<tr><td style="${font}padding:${pad||"0"};">${inner}</td></tr>`;
-  const label = l => `<span style="${font}color:${ORANGE};font-weight:bold;font-size:12px;">${l}:</span>&nbsp;`;
-  const sep = `<span style="color:#c9c5bf;">&nbsp;&nbsp;|&nbsp;&nbsp;</span>`;
+  const label = l => `<span style="${font}color:${INK};font-weight:bold;font-size:13px;">${l}:</span>&nbsp;`;
   const link = (href, text) => `<a href="${esc(href)}" style="${font}color:${INK};text-decoration:none;">${esc(text)}</a>`;
   let img = "";
   if(d.anim !== "none"){
@@ -221,18 +220,18 @@ function build(d, forPreview){
     img = row(`<a href="https://elephantroom.com.au" style="text-decoration:none;"><img src="${forPreview?g.preview:g.src}" width="${g.w}" height="${g.h}" alt="Elephant Room" style="display:block;border:0;outline:none;width:${g.w}px;height:${g.h}px;"></a>`, d.pos==="above" ? "0 0 14px 0" : "14px 0 0 0");
   }
   // Same order as the old house signature: "Name | Title", then P | M, E, A.
-  const name = `<span style="${font}font-size:16px;font-weight:bold;color:${INK};letter-spacing:0.2px;">${esc(d.name||"Your name")}</span>` +
-    (d.title ? `<span style="${font}font-size:14px;color:${MUTE};">&nbsp;&nbsp;|&nbsp;&nbsp;${esc(d.title)}</span>` : "") +
+  const name = `<span style="${font}font-size:14px;color:#333333;">${esc(d.name||"Your name")}</span>` +
+    (d.title ? `<span style="${font}font-size:14px;color:#333333;"> | </span><span style="${font}font-size:14px;font-weight:bold;color:#F9A720;">${esc(d.title)}</span>` : "") +
     (d.pronouns ? `<span style="${font}font-size:12px;color:${MUTE};">&nbsp;&nbsp;(${esc(d.pronouns)})</span>` : "");
   const lines = [];
-  lines.push(label("P") + link(telHref("+61285287546"), OFFICE.phone) + (d.mobile ? sep + label("M") + link(telHref(d.mobile), d.mobile) : ""));
+  if(d.mobile) lines.push(label("M") + link(telHref(d.mobile), d.mobile));
   if(d.email) lines.push(label("E") + link("mailto:"+d.email, d.email));
   lines.push(label("A") + link(OFFICE.map, OFFICE.address));
   if(d.site) lines.push(label("W") + link("https://elephantroom.com.au", "elephantroom.com.au"));
   let out = `<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;${font}color:${INK};">`;
   if(d.pos==="above") out += img;
   out += row(name);
-  out += row(`<span style="${font}font-size:12px;line-height:19px;color:${INK};">${lines.join("<br>")}</span>`, "8px 0 0 0");
+  out += row(`<span style="${font}font-size:13px;line-height:20px;color:#333333;">${lines.join("<br>")}</span>`, "12px 0 0 0");
   if(d.extra) out += row(`<span style="${font}font-size:12px;color:${MUTE};">${esc(d.extra)}</span>`, "6px 0 0 0");
   if(d.pos!=="above") out += img;
   if(d.ack && d.acktext) out += row(`<span style="${font}font-size:10px;line-height:14px;color:#8a867f;">${esc(d.acktext)}</span>`, "12px 0 0 0");
@@ -241,7 +240,7 @@ function build(d, forPreview){
 
 function plain(d){
   return [d.name + (d.title?" | "+d.title:"") + (d.pronouns?` (${d.pronouns})`:""), "",
-    "P: "+OFFICE.phone + (d.mobile?" | M: "+d.mobile:""), d.email&&"E: "+d.email, "A: "+OFFICE.address,
+    d.mobile&&"M: "+d.mobile, d.email&&"E: "+d.email, "A: "+OFFICE.address,
     d.site&&"W: elephantroom.com.au", d.extra,
     d.ack&&d.acktext].filter(Boolean).join("\n");
 }
